@@ -6,7 +6,55 @@ Projeto didático para praticar navegação no React com React Router. A aplica�
 exibe uma lista de produtos, permite filtrá-la por categoria e preço e abre uma
 página de detalhes para cada produto.
 
+App.jsx
+```
+import React from "react";
+import { Outlet } from "react-router";
+import Navigation from "./components/Navigation";
 
+function App() {
+  return (
+    <>
+      <Navigation />
+      <Outlet />
+    </>
+  );
+}
+
+export default App; // ← mude para default
+```
+components/Navigation.jsx
+```
+import React from 'react'
+import { Link, useNavigate } from 'react-router'
+
+export default function Navigation() {
+
+  const navigate = useNavigate()
+
+  function handleAvancar() {
+    navigate(1)
+  }
+
+  return (
+    <>
+      <nav>
+            <a href="https://www.google.com/" target="_blank" rel="noreferrer">Google</a>
+            <Link to="/">Home</Link>
+            <Link to="/about">Sobre</Link>
+            <Link to="/contact">Contato</Link>
+            <Link to="/products">Produtos</Link>
+      </nav>
+      <br />
+      <button onClick={()=> navigate("/")}>Voltar para Página Home</button>
+      <button onClick={()=> navigate(-1)}>Página Anterior</button>
+      <button onClick={handleAvancar}>Avançar</button>
+    </>
+  )
+}
+
+
+```
 ## Tecnologias
 
 - React 19
