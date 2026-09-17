@@ -1,4 +1,6 @@
 # Dependencies
+.gitignore
+
 node_modules/
 
 # Build output
