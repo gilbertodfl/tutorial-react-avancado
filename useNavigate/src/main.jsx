@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router";
+import { RouterProvider } from "react-router";
 import { router } from "./routes/AppRoutes"; // ← exporta o router
 
 ReactDOM.createRoot(document.getElementById("root")).render(

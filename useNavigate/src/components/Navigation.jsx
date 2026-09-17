@@ -3,12 +3,34 @@ import { Link, useNavigate } from 'react-router'
 
 export default function Navigation() {
 
+  const rotas = ['/', '/about', '/contact', '/products']
+  const [indiceAtual, setIndiceAtual] = React.useState(0)
   const navigate = useNavigate()
 
   function handleAvancar() {
-    navigate(1)
+    if (indiceAtual < rotas.length - 1) {
+      const proximoIndice = indiceAtual + 1
+      setIndiceAtual(proximoIndice)
+      console.log('handleAvancar - indiceAtual:', proximoIndice)
+      navigate(rotas[proximoIndice])
+    }
   }
-
+  function handleHome() {
+      setIndiceAtual(0)
+      navigate("/")
+   }
+  function handleVoltar() {
+    if (indiceAtual > 0) {
+      const indiceAnterior = indiceAtual - 1
+      setIndiceAtual(indiceAnterior)
+      console.log('handleVoltar - indiceAtual:', indiceAnterior)
+      navigate(rotas[indiceAnterior])
+    }
+    //  else {
+    //   setIndiceAtual(rotas.length - 1)
+    // }
+    //navigate(-1)
+  }
   return (
     <>
       <nav>
@@ -19,11 +41,14 @@ export default function Navigation() {
             <Link to="/products">Produtos</Link>
       </nav>
           <br />
-      <button onClick={()=> navigate("/")}>Voltar para Página Home</button>
-      <button onClick={()=> navigate(-1)}>Página Anterior</button>
-      <button onClick={handleAvancar}>Avançar</button>
+      <button onClick={()=> handleHome()} disabled={indiceAtual === 0}>Voltar para Página Home</button>
+      <button onClick={()=> handleVoltar()} disabled={indiceAtual === 0}>
+        Página Anterior
+      </button>
+      <button onClick={handleAvancar} disabled={ indiceAtual >= rotas.length - 1 }>
+        Avançar
+      </button>
     </>
   )
 }
-
 
