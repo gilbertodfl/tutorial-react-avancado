@@ -1,0 +1,160 @@
+# Detalhes de produtos com `useParams`
+
+Projeto didático para praticar navegação no React com React Router. A aplicação
+exibe uma lista de produtos, permite filtrá-la por categoria e preço e abre uma
+página de detalhes para cada produto.
+
+## O que você vai aprender
+
+- Como criar rotas com `createBrowserRouter`.
+- Como renderizar as rotas com `RouterProvider`.
+- Como criar links sem recarregar a página usando `Link`.
+- Como ler um parâmetro dinâmico da URL com `useParams`.
+- Como ler e alterar parâmetros de consulta com `useSearchParams`.
+- Como encontrar um item em dados mockados usando `find`.
+- Como exibir uma página quando o produto não existe.
+
+## Tecnologias
+
+- React 19
+- React Router 8
+- Vite
+- JavaScript (ES modules)
+
+## Como executar
+
+É necessário ter o Node.js instalado.
+
+```bash
+# Instala as dependências
+npm install
+
+# Inicia o servidor de desenvolvimento
+npm run dev
+```
+
+Depois, abra no navegador o endereço exibido pelo Vite, normalmente:
+
+```text
+http://localhost:5173/
+```
+
+Outros comandos disponíveis:
+
+```bash
+npm run build    # Gera a versão de produção
+npm run preview  # Serve a versão de produção localmente
+npm run lint     # Verifica problemas apontados pelo ESLint
+```
+
+## Como testar a aplicação
+
+1. Acesse `/products` para ver todos os produtos.
+2. Clique em uma categoria ou em uma faixa de preço.
+3. Observe que os filtros aparecem na URL, por exemplo:
+	 `/products?categoria=eletrônico&preco=4500`.
+4. Clique em um produto para abrir uma URL como `/products/1`.
+5. Na página de detalhes, observe que o `id` da URL identifica o produto.
+6. Teste `/products/999` para ver o tratamento de produto inexistente.
+
+Abra o console do navegador enquanto estuda o projeto. Alguns componentes
+possuem `console.log` para ajudar a acompanhar a renderização e os parâmetros.
+
+## Entendendo as rotas
+
+As rotas ficam em `src/routes/AppRoutes.jsx`:
+
+| URL | Componente | Função |
+| --- | --- | --- |
+| `/` | `Home` | Página inicial |
+| `/about` | `About` | Página sobre |
+| `/contact` | `Contact` | Página de contato |
+| `/products` | `Products` | Lista e filtros |
+| `/products/:id` | `Details` | Detalhes de um produto |
+| qualquer outra | `NotFound` | Página não encontrada |
+
+O trecho `:id` é um parâmetro dinâmico. Isso significa que a mesma rota pode
+atender `/products/1`, `/products/2` e outros valores.
+
+## `useParams`: lendo o `id`
+
+Em `src/pages/Details.jsx`, o hook lê o valor definido na rota:
+
+```jsx
+const { id } = useParams();
+const produto = produtos.find((produto) => produto.id === id);
+```
+
+O valor chega como texto. Por isso, ele é comparado com os `id`s que também
+estão definidos como strings em `src/assets/data.js`.
+
+Depois da busca, o componente segue um destes caminhos:
+
+- Se encontrar o produto, mostra nome, categoria, preço e descrição.
+- Se não encontrar, mostra uma mensagem e um link para voltar à lista.
+
+## `useSearchParams`: filtros na URL
+
+Em `src/pages/Products.jsx`, o hook retorna duas coisas:
+
+```jsx
+const [searchParams, setSearchParams] = useSearchParams();
+```
+
+- `searchParams` permite ler os parâmetros atuais:
+	`searchParams.get("categoria")` e `searchParams.get("preco")`.
+- `setSearchParams` atualiza a URL e faz o componente renderizar novamente.
+
+Os filtros são combinados no método `filter`:
+
+```jsx
+const produtosFiltrados = produtos.filter((produto) => {
+	const mesmaCategoria = categoria
+		? produto.categoria === categoria
+		: true;
+	const dentroDoPreco = preco ? produto.preco <= preco : true;
+
+	return mesmaCategoria && dentroDoPreco;
+});
+```
+
+Assim, o estado dos filtros fica visível na URL e pode ser copiado ou
+recarregado sem depender apenas do estado interno do componente.
+
+## Estrutura principal
+
+```text
+.
+├── index.html
+├── package.json
+├── src/
+│   ├── main.jsx             # Ponto de entrada e RouterProvider
+│   ├── App.jsx              # Componente de aplicação
+│   ├── assets/data.js       # Produtos mockados
+│   ├── routes/AppRoutes.jsx # Configuração das rotas
+│   └── pages/               # Componentes de cada página
+└── readme.md
+```
+
+O ponto de entrada usado atualmente é `src/main.jsx`. Ele importa o roteador
+e entrega a aplicação ao `RouterProvider`.
+
+## Sugestões de exercícios
+
+- Adicione um botão para ordenar os produtos por preço.
+- Crie um filtro por nome usando outro parâmetro de consulta.
+- Substitua os botões de preço por um campo de entrada.
+- Formate os preços como moeda brasileira.
+- Crie um link de navegação comum entre as páginas.
+- Adicione uma imagem para cada produto no arquivo de dados.
+- Extraia os filtros para um componente reutilizável.
+
+## Observação sobre o React Router
+
+Este projeto usa os imports de `react-router`, conforme as dependências atuais
+do `package.json`. 
+
+Em exemplos mais antigos, é comum encontrar os mesmos recursos importados de `react-router-dom`
+
+Ao estudar outro material, confira
+qual versão e qual configuração o projeto está usando.
