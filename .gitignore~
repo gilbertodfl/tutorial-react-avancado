@@ -1,14 +1,7 @@
 # Dependencies
 .gitignore
 
-# Dependencies (root e subpacotes)
 node_modules/
-**/node_modules/
-
-# Build output (root e subpacotes)
-dist/
-**/dist/
-
 
 # Build output
 dist/
